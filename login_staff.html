@@ -179,7 +179,7 @@
 <div class="login-card">
   <div class="card-top">
     <div class="card-logo"><i class="ti ti-waves"></i></div>
-    <div class="card-title">AquaPass</div>
+    <div class="card-title">AquaCrest</div>
     <div class="card-sub">Sistem Manajemen Kolam Renang & Wahana Air</div>
     <div class="staff-tag"><i class="ti ti-shield-lock" style="font-size:12px"></i>Akses khusus Staff & Admin</div>
   </div>
@@ -269,8 +269,8 @@
     </div>
 
   </div><div class="card-footer-note">
-    Halaman ini khusus untuk staff & admin AquaPass.<br>
-    Pengunjung beli tiket di <a href="beli-tiket-v2.html">sini</a>.
+    Halaman ini khusus untuk staff & admin AquaCrest.<br>
+    Pengunjung beli tiket di <a href="pengunjung/beli_tiket.html">sini</a>.
   </div>
 </div>
 
@@ -373,14 +373,14 @@ function verifyOtp() {
       
       // LOGIKA REDIRECT MENYESUAIKAN KATA KUNCI EMAIL
       if (otpEmail.includes('admin')) {
-        window.location.href = 'dashboard_admin.html';
+        window.location.href = 'admin/dashboard.html';
       } else if (otpEmail.includes('kasir')) {
-        window.location.href = 'kasirpos.html';
+        window.location.href = 'kasir/dashboard.html';
       } else if (otpEmail.includes('petugas') || otpEmail.includes('staff')) {
-        window.location.href = 'geolocation.html';
+        window.location.href = 'petugas/petugas.html';
       } else {
         // Jika tidak ada kata kunci yang cocok, default ke dashboard umum
-        window.location.href = 'dashboard.html';
+        window.location.href = 'index.html';
       }
     }, 1000);
 
