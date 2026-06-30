@@ -1,0 +1,99 @@
+/* ── 📱 INTERMUKA LAYOUT MOBILE STAFF LAPANGAN ── */
+.mobile-container {
+  max-width: 576px;
+  width: 100%;
+  margin: 0 auto;
+  background: #f8fafc;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 0 32px rgba(15, 23, 42, 0.08);
+  padding-bottom: 70px; /* Jarak aman agar konten tidak tertutup bottom nav */
+}
+
+.mobile-header {
+  background: #1e293b;
+  color: #fff;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 150;
+}
+
+.m-logo-area { display: flex; align-items: center; gap: 8px; }
+.m-logo-title { font-size: 14px; font-weight: 800; letter-spacing: 0.5px; line-height: 1.2; }
+.m-logo-role { font-size: 11px; color: #38bdf8; font-weight: 600; }
+
+.noti-bell-box { font-size: 20px; color: #cbd5e1; cursor: pointer; position: relative; }
+.noti-dot { width: 7px; height: 7px; background: #ef4444; border-radius: 50%; position: absolute; top: 1px; right: 2px; }
+
+/* Kamera Frame Simulasi */
+.camera-view-container {
+  width: 100%;
+  height: 240px;
+  background: #0f172a;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  border: 2px solid #e2e8f0;
+}
+
+.camera-laser-line {
+  position: absolute;
+  left: 0; right: 0; height: 2px;
+  background: #ef4444;
+  box-shadow: 0 0 8px #ef4444;
+  top: 50%;
+  animation: scanLaser 2s linear infinite;
+}
+
+@keyframes scanLaser {
+  0% { top: 10%; }
+  50% { top: 90%; }
+  100% { top: 10%; }
+}
+
+/* ── BOTTOM TAB BAR NAVIGATION ── */
+.bottom-nav-bar {
+  position: fixed;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  max-width: 576px; width: 100%;
+  height: 64px;
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 200;
+}
+
+.tab-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #64748b;
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.15s;
+  gap: 3px;
+}
+.tab-nav-item i { font-size: 20px; }
+.tab-nav-item:hover { color: #0f172a; text-decoration: none; }
+.tab-nav-item.active { color: #0284c7; }
+
+/* Pane View Routing Mobile */
+.mobile-pane { display: none; padding: 16px; }
+.mobile-pane.active { display: block; }

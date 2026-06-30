@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AquaCrest — Login Staff</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a 0%, #1a3a5c 50%, #0c4a6e 100%);
+    display: flex; align-items: center; justify-content: center; padding: 20px;
+    position: relative; overflow: hidden;
+  }
+
+  /* ── BG DECORATION ── */
+  .bg-circle {
+    position: absolute; border-radius: 50%;
+    background: rgba(56,189,248,.06); pointer-events: none;
+  }
+  .bg-c1 { width: 500px; height: 500px; top: -150px; right: -100px; }
+  .bg-c2 { width: 350px; height: 350px; bottom: -100px; left: -80px; }
+  .bg-c3 { width: 200px; height: 200px; top: 40%; left: 20%; }
+  .bg-wave {
+    position: absolute; width: 100%; bottom: 0; opacity: .04;
+    font-size: 180px; color: #38bdf8; text-align: center;
+    line-height: 1; pointer-events: none; user-select: none;
+    letter-spacing: -10px;
+  }
+
+  /* ── CARD ── */
+  .login-card {
+    background: rgba(255,255,255,.97);
+    border-radius: 20px; padding: 0;
+    width: 100%; max-width: 420px;
+    box-shadow: 0 24px 80px rgba(0,0,0,.35);
+    position: relative; z-index: 10; overflow: hidden;
+  }
+
+  /* CARD TOP */
+  .card-top {
+    background: linear-gradient(135deg, #1a3a5c, #1d4ed8);
+    padding: 28px 32px 24px; text-align: center;
+  }
+  .card-logo {
+    width: 54px; height: 54px; background: #38bdf8;
+    border-radius: 14px; display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px; box-shadow: 0 4px 16px rgba(56,189,248,.4);
+  }
+  .card-logo i { font-size: 28px; color: #fff; }
+  .card-title { color: #fff; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .card-sub   { color: rgba(255,255,255,.6); font-size: 12px; }
+  .staff-tag  {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(56,189,248,.2); border: 1px solid rgba(56,189,248,.3);
+    color: #7dd3fc; font-size: 10px; padding: 3px 12px; border-radius: 99px;
+    margin-top: 10px; font-weight: 500;
+  }
+
+  /* CARD BODY */
+  .card-body { padding: 28px 32px; }
+
+  /* ── TABS ── */
+  .auth-tabs {
+    display: flex; background: #f1f5f9; border-radius: 10px;
+    padding: 3px; gap: 3px; margin-bottom: 24px;
+  }
+  .auth-tab {
+    flex: 1; padding: 8px; border-radius: 8px; border: none; background: transparent;
+    font-size: 12px; font-weight: 500; color: #64748b; cursor: pointer; transition: all .15s;
+    display: flex; align-items: center; justify-content: center; gap: 5px;
+  }
+  .auth-tab.active { background: #fff; color: #1d4ed8; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+  .auth-tab i { font-size: 15px; }
+
+  /* ── FORM ── */
+  .auth-form { display: none; }
+  .auth-form.active { display: block; }
+  .form-group { margin-bottom: 16px; }
+  .form-label { font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 6px; display: block; }
+  .input-wrap  { position: relative; }
+  .form-input {
+    width: 100%; padding: 11px 14px 11px 40px;
+    border: 1.5px solid #e2e8f0; border-radius: 10px;
+    font-size: 13px; color: #1e293b; background: #fff;
+    outline: none; transition: border-color .15s, box-shadow .15s;
+  }
+  .form-input:focus { border-color: #1d4ed8; box-shadow: 0 0 0 3px rgba(29,78,216,.1); }
+  .input-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 17px; }
+  .input-eye  { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 17px; cursor: pointer; }
+  .input-eye:hover { color: #475569; }
+
+  /* REMEMBER + FORGOT */
+  .form-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .remember-row { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #475569; cursor: pointer; }
+  .remember-row input { width: 14px; height: 14px; accent-color: #1d4ed8; cursor: pointer; }
+  .forgot-link { font-size: 12px; color: #1d4ed8; text-decoration: none; }
+  .forgot-link:hover { text-decoration: underline; }
+
+  /* BTN LOGIN */
+  .btn-login {
+    width: 100%; padding: 12px; background: #1d4ed8; color: #fff;
+    border: none; border-radius: 10px; font-size: 14px; font-weight: 600;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: opacity .15s; margin-bottom: 16px;
+  }
+  .btn-login:hover { opacity: .9; }
+
+  /* DIVIDER */
+  .divider { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .divider-line { flex: 1; height: 1px; background: #e2e8f0; }
+  .divider-text { font-size: 11px; color: #94a3b8; white-space: nowrap; }
+
+  /* GOOGLE BTN */
+  .btn-google {
+    width: 100%; padding: 11px; background: #fff; color: #374151;
+    border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 13px; font-weight: 500;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+    transition: all .15s;
+  }
+  .btn-google:hover { background: #f8fafc; border-color: #94a3b8; }
+  .google-icon { width: 20px; height: 20px; }
+
+  /* ── OTP SCREEN ── */
+  .otp-screen { display: none; }
+  .otp-screen.active { display: block; }
+  .otp-title  { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .otp-sub    { font-size: 12px; color: #64748b; margin-bottom: 20px; line-height: 1.6; }
+  .otp-email  { font-weight: 600; color: #1d4ed8; }
+  .otp-inputs { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; }
+  .otp-input  {
+    width: 48px; height: 56px; border: 2px solid #e2e8f0; border-radius: 12px;
+    text-align: center; font-size: 22px; font-weight: 700; color: #1e293b;
+    outline: none; transition: border-color .15s; background: #f8fafc;
+  }
+  .otp-input:focus { border-color: #1d4ed8; background: #fff; box-shadow: 0 0 0 3px rgba(29,78,216,.1); }
+  .otp-input.filled { border-color: #1d4ed8; background: #eff6ff; }
+  .otp-timer  { text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 16px; }
+  .otp-timer strong { color: #1d4ed8; }
+  .btn-verify {
+    width: 100%; padding: 12px; background: #1d4ed8; color: #fff;
+    border: none; border-radius: 10px; font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: opacity .15s; display: flex; align-items: center; justify-content: center; gap: 8px;
+    margin-bottom: 12px;
+  }
+  .btn-verify:hover { opacity: .9; }
+  .btn-resend {
+    width: 100%; padding: 10px; background: transparent; color: #64748b;
+    border: 1px solid #e2e8f0; border-radius: 10px; font-size: 12px;
+    cursor: pointer; transition: all .15s;
+  }
+  .btn-resend:hover { background: #f8fafc; }
+  .btn-back-login { background: transparent; border: none; color: #64748b; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px; margin-bottom: 16px; }
+  .btn-back-login:hover { color: #1d4ed8; }
+
+  /* CARD FOOTER */
+  .card-footer-note {
+    padding: 14px 32px 20px; text-align: center;
+    font-size: 11px; color: #94a3b8; border-top: 1px solid #f1f5f9;
+  }
+  .card-footer-note a { color: #1d4ed8; text-decoration: none; }
+
+  @keyframes shake {
+    0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-5px)} 40%,80%{transform:translateX(5px)}
+  }
+  .shake { animation: shake .4s ease-in-out; }
+</style>
+</head>
+<body>
+
+<div class="bg-circle bg-c1"></div>
+<div class="bg-circle bg-c2"></div>
+<div class="bg-circle bg-c3"></div>
+<div class="bg-wave">〰〰〰〰〰</div>
+
+<div class="login-card">
+  <div class="card-top">
+    <div class="card-logo"><i class="ti ti-waves"></i></div>
+    <div class="card-title">AquaPass</div>
+    <div class="card-sub">Sistem Manajemen Kolam Renang & Wahana Air</div>
+    <div class="staff-tag"><i class="ti ti-shield-lock" style="font-size:12px"></i>Akses khusus Staff & Admin</div>
+  </div>
+
+  <div class="card-body">
+
+    <div id="login-screen">
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchTab('password')" id="tab-password">
+          <i class="ti ti-key"></i> Email & Password
+        </button>
+        <button class="auth-tab" onclick="switchTab('google')" id="tab-google">
+          <i class="ti ti-brand-google"></i> Google
+        </button>
+      </div>
+
+      <div class="auth-form active" id="form-password">
+        <div class="form-group">
+          <label class="form-label">Email Staff</label>
+          <div class="input-wrap">
+            <i class="ti ti-mail input-icon"></i>
+            <input class="form-input" id="inp-email" type="email" placeholder="contoh: admin@aquapass.id"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="input-wrap">
+            <i class="ti ti-lock input-icon"></i>
+            <input class="form-input" id="inp-pass" type="password" placeholder="••••••••"/>
+            <i class="ti ti-eye input-eye" onclick="togglePass()" id="eye-icon"></i>
+          </div>
+        </div>
+        <div class="form-meta">
+          <label class="remember-row"><input type="checkbox"> Ingat saya</label>
+          <a href="#" class="forgot-link">Lupa password?</a>
+        </div>
+        <button class="btn-login" onclick="doLogin('password')">
+          <i class="ti ti-login"></i> Masuk
+        </button>
+      </div>
+
+      <div class="auth-form" id="form-google">
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px;margin-bottom:20px;font-size:12px;color:#475569;line-height:1.6">
+          <i class="ti ti-info-circle" style="color:#1d4ed8;font-size:15px;margin-right:5px"></i>
+          Klik tombol di bawah untuk masuk menggunakan akun Google internal Anda. Hak akses dashboard akan menyesuaikan jenis email yang terdaftar.
+        </div>
+        <button class="btn-google" onclick="doLogin('google')">
+          <svg class="google-icon" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          Masuk dengan Google
+        </button>
+      </div>
+
+      <div id="google-alt" style="display:block">
+        <div class="divider"><div class="divider-line"></div><span class="divider-text">atau</span><div class="divider-line"></div></div>
+        <button class="btn-google" onclick="switchTab('google');this.closest('#google-alt').style.display='none'">
+          <svg class="google-icon" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          Masuk dengan Google
+        </button>
+      </div>
+    </div><div id="otp-screen" class="otp-screen">
+      <button class="btn-back-login" onclick="backToLogin()">
+        <i class="ti ti-arrow-left" style="font-size:14px"></i> Kembali
+      </button>
+      <div class="otp-title">Verifikasi OTP</div>
+      <div class="otp-sub">Kode OTP 6 digit telah dikirim ke email<br><span class="otp-email" id="otp-email-show">—</span></div>
+      <div class="otp-inputs">
+        <input class="otp-input" id="otp0" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,0)"/>
+        <input class="otp-input" id="otp1" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,1)"/>
+        <input class="otp-input" id="otp2" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,2)"/>
+        <input class="otp-input" id="otp3" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,3)"/>
+        <input class="otp-input" id="otp4" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,4)"/>
+        <input class="otp-input" id="otp5" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,5)"/>
+      </div>
+      <div class="otp-timer">Kode kedaluwarsa dalam <strong id="otp-countdown">15:00</strong></div>
+      <button class="btn-verify" onclick="verifyOtp()"><i class="ti ti-check"></i> Verifikasi OTP</button>
+      <button class="btn-resend" onclick="resendOtp()"><i class="ti ti-refresh" style="font-size:13px;margin-right:4px"></i>Kirim Ulang OTP</button>
+    </div>
+
+  </div><div class="card-footer-note">
+    Halaman ini khusus untuk staff & admin AquaPass.<br>
+    Pengunjung beli tiket di <a href="beli-tiket-v2.html">sini</a>.
+  </div>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.getElementById('tab-password').className = tab==='password' ? 'auth-tab active' : 'auth-tab';
+  document.getElementById('tab-google').className   = tab==='google'   ? 'auth-tab active' : 'auth-tab';
+  document.getElementById('form-password').className = tab==='password' ? 'auth-form active' : 'auth-form';
+  document.getElementById('form-google').className   = tab==='google'   ? 'auth-form active' : 'auth-form';
+  document.getElementById('google-alt').style.display = tab==='password' ? 'block' : 'none';
+}
+
+function togglePass() {
+  const inp  = document.getElementById('inp-pass');
+  const icon = document.getElementById('eye-icon');
+  if (inp.type==='password') { inp.type='text'; icon.className='ti ti-eye-off input-eye'; }
+  else                       { inp.type='password'; icon.className='ti ti-eye input-eye'; }
+}
+
+let otpEmail = '';
+let countdownTimer = null;
+
+function doLogin(method) {
+  if (method==='password') {
+    const email = document.getElementById('inp-email').value.trim().toLowerCase();
+    const pass  = document.getElementById('inp-pass').value;
+    
+    if (!email || !pass) {
+      Swal.fire({ icon:'warning', title:'Lengkapi email dan password!', toast:true, position:'top-end', showConfirmButton:false, timer:2000 });
+      return;
+    }
+    otpEmail = email;
+  } else {
+    // Simulasi Login Google Pop-up
+    Swal.fire({
+      title: 'Menghubungkan Google OAuth...',
+      text: 'Membuka pop-up autentikasi Google...',
+      allowOutsideClick: false,
+      didOpen: () => { Swal.showLoading(); }
+    });
+
+    setTimeout(() => {
+      Swal.close();
+      // Contoh email mock hasil deteksi akun google internal untuk demonstrasi
+      otpEmail = 'admin@aquapass.id'; 
+      showOtpScreen();
+    }, 1200);
+    return;
+  }
+  showOtpScreen();
+}
+
+function showOtpScreen() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('otp-screen').className = 'otp-screen active';
+  document.getElementById('otp-email-show').textContent = otpEmail;
+  document.getElementById('otp0').focus();
+  startCountdown(15 * 60);
+}
+
+function backToLogin() {
+  document.getElementById('login-screen').style.display = 'block';
+  document.getElementById('otp-screen').className = 'otp-screen';
+  clearInterval(countdownTimer);
+  for (let i=0; i<6; i++) {
+    const el = document.getElementById('otp'+i);
+    el.value = ''; el.className = 'otp-input';
+  }
+}
+
+function otpInput(el, idx) {
+  el.value = el.value.replace(/\D/,'');
+  el.className = el.value ? 'otp-input filled' : 'otp-input';
+  if (el.value && idx < 5) document.getElementById('otp'+(idx+1)).focus();
+}
+
+function getOtpVal() {
+  return Array.from({length:6}, (_,i) => document.getElementById('otp'+i).value).join('');
+}
+
+function verifyOtp() {
+  const val = getOtpVal();
+  if (val.length < 6) {
+    Swal.fire({ icon:'warning', title:'Masukkan 6 digit OTP!', toast:true, position:'top-end', showConfirmButton:false, timer:2000 });
+    return;
+  }
+  
+  // Simulasi validasi OTP benar = "123456"
+  if (val === '123456') {
+    clearInterval(countdownTimer);
+    
+    Swal.fire({
+      title: 'Memvalidasi Sesi...',
+      allowOutsideClick: false,
+      didOpen: () => { Swal.showLoading(); }
+    });
+
+    setTimeout(() => {
+      Swal.close();
+      
+      // LOGIKA REDIRECT MENYESUAIKAN KATA KUNCI EMAIL
+      if (otpEmail.includes('admin')) {
+        window.location.href = 'dashboard_admin.html';
+      } else if (otpEmail.includes('kasir')) {
+        window.location.href = 'kasirpos.html';
+      } else if (otpEmail.includes('petugas') || otpEmail.includes('staff')) {
+        window.location.href = 'geolocation.html';
+      } else {
+        // Jika tidak ada kata kunci yang cocok, default ke dashboard umum
+        window.location.href = 'dashboard.html';
+      }
+    }, 1000);
+
+  } else {
+    const inputs = document.querySelectorAll('.otp-input');
+    inputs.forEach(i => { i.classList.add('shake'); setTimeout(()=>i.classList.remove('shake'),500); i.style.borderColor='#ef4444'; });
+    Swal.fire({ icon:'error', title:'OTP salah!', text:'Coba: 123456 (demo)', toast:true, position:'top-end', showConfirmButton:false, timer:2500 });
+    setTimeout(() => inputs.forEach(i => i.style.borderColor=''), 1000);
+  }
+}
+
+function resendOtp() {
+  for (let i=0; i<6; i++) { const el=document.getElementById('otp'+i); el.value=''; el.className='otp-input'; }
+  document.getElementById('otp0').focus();
+  clearInterval(countdownTimer);
+  startCountdown(15*60);
+  Swal.fire({ icon:'success', title:'OTP dikirim ulang!', toast:true, position:'top-end', showConfirmButton:false, timer:2000 });
+}
+
+function startCountdown(secs) {
+  let remaining = secs;
+  function tick() {
+    const m = String(Math.floor(remaining/60)).padStart(2,'0');
+    const s = String(remaining%60).padStart(2,'0');
+    document.getElementById('otp-countdown').textContent = m+':'+s;
+    if (remaining <= 0) {
+      clearInterval(countdownTimer);
+      document.getElementById('otp-countdown').textContent = '00:00';
+      Swal.fire({ icon:'warning', title:'OTP kedaluwarsa!', text:'Silakan kirim ulang OTP.', toast:true, position:'top-end', showConfirmButton:false, timer:3000 });
+    }
+    remaining--;
+  }
+  tick();
+  countdownTimer = setInterval(tick, 1000);
+}
+</script>
+</body>
+</html>

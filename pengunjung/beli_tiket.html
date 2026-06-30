@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AquaCrest — Beli Tiket</title>
+<link class="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
+<link class="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="../css/pengunjung.css"/>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="../index.html" class="nav-logo">🌊 AQUACREST</a>
+  <div class="nav-links">
+    <a href="../index.html" class="nav-link">Beranda</a>
+    <a href="beli_tiket.html" class="nav-link active">Beli Tiket</a>
+    <a href="wahana.html" class="nav-link">Wahana</a>
+    <a href="temukan_kami.html" class="nav-link">Temukan Kami</a>
+  </div>
+  <div class="nav-right">
+    <a href="login_staff.html" class="btn-staff"><i class="ti ti-shield-lock" style="font-size:14px"></i>Login Staff</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag"><i class="ti ti-ticket" style="font-size:12px"></i>Tanpa registrasi, langsung dapat e-tiket!</div>
+  <h1 class="hero-title">Beli Tiket AquaPass Online</h1>
+  <p class="hero-sub">Pilih tanggal & tiket, isi nama dan email, bayar — e-tiket langsung dikirim ke email kamu. Semudah itu!</p>
+  <div class="hero-chips">
+    <div class="hero-chip"><i class="ti ti-mail-fast" style="font-size:13px"></i>E-tiket via email</div>
+    <div class="hero-chip"><i class="ti ti-lock" style="font-size:13px"></i>Bayar aman tanpa halangan</div>
+    <div class="hero-chip"><i class="ti ti-qrcode" style="font-size:13px"></i>QR Code masuk</div>
+  </div>
+</div>
+
+<div class="main-wrap">
+  <div class="order-card">
+    <div class="step-tabs">
+      <div class="step-tab active" id="tab-1"><span class="step-num idle" id="snum-1">1</span>Tiket</div>
+      <div class="step-tab idle"  id="tab-2"><span class="step-num idle" id="snum-2">2</span>Data Diri</div>
+      <div class="step-tab idle"  id="tab-3"><span class="step-num idle" id="snum-3">3</span>Bayar</div>
+      <div class="step-tab idle"  id="tab-4"><span class="step-num idle" id="snum-4">4</span>Selesai</div>
+    </div>
+
+    <!-- ══ STEP 1: PILIH TIKET ══ -->
+
+    <div class="step-content active" id="step-1">
+      <h2 style="font-size:16px;font-weight:700;margin-bottom:4px">Pilih Tanggal Kunjungan</h2>
+      <p style="font-size:12px;color:#64748b;margin-bottom:16px">Geser untuk lihat tanggal lain. Merah = penuh.</p>
+
+      <div class="date-scroll">
+        <div class="date-card" onclick="pilihTanggal(this,'Sab, 21 Jun 2025')">
+          <div class="date-day">Sab</div>
+          <div class="date-num">21</div>
+          <div class="date-month">Jun</div>
+          <div class="date-kuota">312 tersisa</div>
+        </div>
+        <div class="date-card selected" onclick="pilihTanggal(this,'Min, 22 Jun 2025')">
+          <div class="date-day">Min</div>
+          <div class="date-num">22</div>
+          <div class="date-month">Jun</div>
+          <div class="date-kuota">288 tersisa</div>
+        </div>
+        <div class="date-card" onclick="pilihTanggal(this,'Sen, 23 Jun 2025')">
+          <div class="date-day">Sen</div>
+          <div class="date-num">23</div>
+          <div class="date-month">Jun</div>
+          <div class="date-kuota">450 tersisa</div>
+        </div>
+        <div class="date-card" onclick="pilihTanggal(this,'Sel, 24 Jun 2025')">
+          <div class="date-day">Sel</div>
+          <div class="date-num">24</div>
+          <div class="date-month">Jun</div>
+          <div class="date-kuota">500 tersisa</div>
+        </div>
+        <div class="date-card full">
+          <div class="date-day">Rab</div>
+          <div class="date-num">25</div>
+          <div class="date-month">Jun</div>
+          <div class="date-kuota">PENUH</div>
+        </div>
+        <div class="date-card" onclick="pilihTanggal(this,'Kam, 26 Jun 2025')">
+          <div class="date-day">Kam</div>
+          <div class="date-num">26</div>
+          <div class="date-month">Jun</div>
+          <div class="date-kuota">490 tersisa</div>
+        </div>
+        <div class="date-card" onclick="pilihTanggal(this,'Jum, 27 Jun 2025')">
+          <div class="date-day">Jum</div>
+          <div class="date-num">27</div>
+          <div class="date-month">Jun</div>
+          <div class="date-kuota">370 tersisa</div>
+        </div>
+        <div class="date-card" onclick="pilihTanggal(this,'Sab, 28 Jun 2025')">
+          <div class="date-day">Sab</div>
+          <div class="date-num">28</div>
+          <div class="date-month">Jun</div>
+          <div class="date-kuota">210 tersisa</div>
+        </div>
+      </div>
+
+      <div class="tiket-grid">
+        <div class="tiket-card dewasa selected" onclick="selectTiket(this,'dewasa')">
+          <div class="tiket-head">
+            <span class="tiket-badge">Dewasa</span>
+            <i class="ti ti-check" style="color:#3b82f6;font-size:16px" id="chk-dewasa"></i>
+          </div>
+          <div class="tiket-name">Tiket Dewasa</div>
+          <div class="tiket-desc">Usia 13 tahun ke atas. Akses semua wahana.</div>
+          <div class="tiket-price">Rp25.000 <small>/orang</small></div>
+          <div class="tiket-qty-row">
+            <span class="tiket-qty-label">Jumlah</span>
+            <div class="qty-ctrl">
+              <button class="qty-btn" onclick="event.stopPropagation();chgQty('dewasa',-1)">−</button>
+              <span class="qty-val" id="qty-dewasa">2</span>
+              <button class="qty-btn" onclick="event.stopPropagation();chgQty('dewasa',1)">+</button>
+            </div>
+          </div>
+          <div class="tiket-kuota"><i class="ti ti-circle-check" style="font-size:12px"></i>288 kuota tersisa</div>
+        </div>
+
+        <div class="tiket-card anak" onclick="selectTiket(this,'anak')">
+          <div class="tiket-head">
+            <span class="tiket-badge">Anak-anak</span>
+            <i class="ti ti-check" style="color:#22c55e;font-size:16px;display:none" id="chk-anak"></i>
+          </div>
+          <div class="tiket-name">Tiket Anak</div>
+          <div class="tiket-desc">Usia 3–12 tahun. Akses wahana anak.</div>
+          <div class="tiket-price">Rp15.000 <small>/orang</small></div>
+          <div class="tiket-qty-row">
+            <span class="tiket-qty-label">Jumlah</span>
+            <div class="qty-ctrl">
+              <button class="qty-btn" onclick="event.stopPropagation();chgQty('anak',-1)">−</button>
+              <span class="qty-val" id="qty-anak">0</span>
+              <button class="qty-btn" onclick="event.stopPropagation();chgQty('anak',1)">+</button>
+            </div>
+          </div>
+          <div class="tiket-kuota"><i class="ti ti-circle-check" style="font-size:12px"></i>288 kuota tersisa</div>
+        </div>
+
+        <div class="tiket-card lansia" onclick="selectTiket(this,'lansia')">
+          <div class="tiket-head">
+            <span class="tiket-badge">Lansia</span>
+            <i class="ti ti-check" style="color:#f59e0b;font-size:16px;display:none" id="chk-lansia"></i>
+          </div>
+          <div class="tiket-name">Tiket Lansia</div>
+          <div class="tiket-desc">Usia 60 tahun ke atas. Harga spesial.</div>
+          <div class="tiket-price">Rp10.000 <small>/orang</small></div>
+          <div class="tiket-qty-row">
+            <span class="tiket-qty-label">Jumlah</span>
+            <div class="qty-ctrl">
+              <button class="qty-btn" onclick="event.stopPropagation();chgQty('lansia',-1)">−</button>
+              <span class="qty-val" id="qty-lansia">0</span>
+              <button class="qty-btn" onclick="event.stopPropagation();chgQty('lansia',1)">+</button>
+            </div>
+          </div>
+          <div class="tiket-kuota"><i class="ti ti-circle-check" style="font-size:12px"></i>288 kuota tersisa</div>
+        </div>
+
+        <div class="tiket-card rombongan" onclick="selectTiket(this,'rombongan')">
+          <div class="tiket-head">
+            <span class="tiket-badge">Rombongan</span>
+            <i class="ti ti-check" style="color:#ec4899;font-size:16px;display:none" id="chk-rombongan"></i>
+          </div>
+          <div class="tiket-name">Tiket Rombongan</div>
+          <div class="tiket-desc">Min. 10 orang. Lebih hemat untuk grup!</div>
+          <div class="tiket-price">Rp12.000 <small>/orang</small></div>
+          <div class="tiket-qty-row">
+            <span class="tiket-qty-label">Jumlah</span>
+            <div class="qty-ctrl">
+              <button class="qty-btn" onclick="event.stopPropagation();chgQty('rombongan',-1)">−</button>
+              <span class="qty-val" id="qty-rombongan">0</span>
+              <button class="qty-btn" onclick="event.stopPropagation();chgQty('rombongan',1)">+</button>
+            </div>
+          </div>
+          <div class="tiket-kuota"><i class="ti ti-circle-check" style="font-size:12px"></i>Min. 10 orang</div>
+        </div>
+      </div>
+
+      <button class="btn-next" id="btn-step1" onclick="goStep(2)">
+        Lanjut ke Data Diri <i class="ti ti-arrow-right"></i>
+      </button>
+    </div>
+
+    <!-- ══ STEP 2: DATA DIRI ══ -->
+
+    <div class="step-content" id="step-2">
+      <h2 style="font-size:16px;font-weight:700;margin-bottom:4px">Isi Data Diri</h2>
+      <p style="font-size:12px;color:#64748b;margin-bottom:20px">Tidak perlu buat akun. E-tiket akan dikirim ke email yang kamu isi.</p>
+      <div class="form-section">
+        <div class="form-section-title"><i class="ti ti-user"></i>Informasi Pemesan</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Nama Lengkap <span class="req">*</span></label>
+            <input class="form-control2" id="input-nama" type="text" placeholder="cth: Budi Santoso"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nomor HP <span class="req">*</span></label>
+            <input class="form-control2" id="input-hp" type="tel" placeholder="cth: 08123456789"/>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Alamat Email <span class="req">*</span></label>
+            <input class="form-control2" id="input-email" type="email" placeholder="cth: budi@gmail.com"/>
+            <span class="form-hint"><i class="ti ti-info-circle" style="font-size:12px"></i> E-tiket PDF & QR Code akan dikirim ke email ini</span>
+          </div>
+        </div>
+
+        <div class="email-note">
+          <i class="ti ti-mail-check"></i>
+          <span>Pastikan email yang kamu isi benar dan aktif. E-tiket hanya bisa dikirim satu kali. Cek folder <strong>Spam</strong> jika tidak masuk inbox.</span>
+        </div>
+      </div>
+      
+      <!-- RINGKASAN MINI -->
+
+      <div class="summary-box" style="margin-top:20px">
+        <div style="font-size:12px;font-weight:600;color:#475569;margin-bottom:10px">Ringkasan Pesanan</div>
+        <div id="summary-mini"><!-- diisi JS --></div>
+      </div>
+
+      <div class="btn-row2">
+        <button class="btn-back" onclick="goStep(1)">← Kembali</button>
+        <button class="btn-next" style="margin-top:0" id="btn-step2" onclick="goStep(3)">
+          Lanjut ke Pembayaran <i class="ti ti-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- ══ STEP 3: BAYAR ══ -->
+    <div class="step-content" id="step-3">
+      <h2 style="font-size:16px;font-weight:700;margin-bottom:4px">Pilih Metode Bayar</h2>
+      <p style="font-size:12px;color:#64748b;margin-bottom:20px">Pembayaran aman diproses oleh Midtrans.</p>
+      <div class="pay-grid">
+        <div class="pay-card selected" onclick="selectPay(this)">
+          <div class="pay-icon" style="background:#dbeafe"><i class="ti ti-qrcode" style="color:#1d4ed8"></i></div>
+          <div><div class="pay-name">QRIS</div><div class="pay-desc">Scan & bayar instan</div></div>
+        </div>
+
+        <div class="pay-card" onclick="selectPay(this)">
+          <div class="pay-icon" style="background:#dcfce7"><i class="ti ti-building-bank" style="color:#166534"></i></div>
+          <div><div class="pay-name">Virtual Account</div><div class="pay-desc">Transfer bank otomatis</div></div>
+        </div>
+        <div class="pay-card" onclick="selectPay(this)">
+          <div class="pay-icon" style="background:#fef9c3"><i class="ti ti-wallet" style="color:#854d0e"></i></div>
+          <div><div class="pay-name">GoPay / OVO</div><div class="pay-desc">Dompet digital</div></div>
+        </div>
+        <div class="pay-card" onclick="selectPay(this)">
+          <div class="pay-icon" style="background:#fce7f3"><i class="ti ti-credit-card" style="color:#9d174d"></i></div>
+          <div><div class="pay-name">Kartu Kredit/Debit</div><div class="pay-desc">Visa, Mastercard</div></div>
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <div style="font-size:12px;font-weight:600;color:#475569;margin-bottom:10px">Konfirmasi Pesanan</div>
+        <div id="summary-final"><!-- diisi JS --></div>
+        <div class="summary-row border-top">
+          <span class="summary-label" style="font-weight:600">Total Bayar</span>
+          <span class="summary-total" id="total-final">Rp0</span>
+        </div>
+        <div style="font-size:11px;color:#94a3b8;margin-top:8px;display:flex;gap:6px;align-items:flex-start">
+          <i class="ti ti-mail" style="font-size:14px;color:#38bdf8;flex-shrink:0;margin-top:1px"></i>
+          E-tiket dikirim ke: <strong id="show-email" style="color:#1e293b">—</strong>
+        </div>
+      </div>
+
+      <div class="btn-row2">
+        <button class="btn-back" onclick="goStep(2)">← Kembali</button>
+        <button class="btn-next" style="margin-top:0;background:#22c55e" id="btn-step3" onclick="prosesBayar()">
+          <i class="ti ti-lock"></i> Bayar Sekarang
+        </button>
+      </div>
+    </div>
+
+    <!-- ══ STEP 4: SUKSES ══ -->
+    <div class="step-content" id="step-4">
+      <div class="success-wrap">
+        <div class="success-icon"><i class="ti ti-circle-check"></i></div>
+        <div class="success-title">Pembayaran Berhasil! 🎉</div>
+        <p class="success-sub">E-tiket PDF & QR Code sudah dikirim ke email kamu.<br>Tunjukkan QR Code kepada petugas saat masuk.</p>
+        <div class="success-info">
+          <div class="success-info-row"><span class="label">Kode Transaksi</span><span class="val" id="trx-code">TRX-20250622-00088</span></div>
+          <div class="success-info-row"><span class="label">Email Penerima</span><span class="val" id="trx-email">—</span></div>
+          <div class="success-info-row"><span class="label">Tanggal Kunjungan</span><span class="val" id="trx-tanggal">—</span></div>
+          <div class="success-info-row"><span class="label">Total Bayar</span><span class="val" id="trx-total">—</span></div>
+        </div>
+        <button class="btn-download"><i class="ti ti-download"></i>Unduh E-Tiket PDF</button>
+        <button class="btn-beli-lagi" onclick="goStep(1)">← Beli Tiket Lagi</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+const prices = { dewasa:25000, anak:15000, lansia:10000, rombongan:12000 };
+const names  = { dewasa:'Tiket Dewasa', anak:'Tiket Anak', lansia:'Tiket Lansia', rombongan:'Tiket Rombongan' };
+const qtys   = { dewasa:2, anak:0, lansia:0, rombongan:0 };
+let selectedDate = 'Min, 22 Jun 2025';
+
+function fmt(n) { return 'Rp' + n.toLocaleString('id-ID'); }
+function total() {
+  return Object.keys(qtys).reduce((s,k) => s + qtys[k]*prices[k], 0);
+}
+
+function chgQty(type, d) {
+  qtys[type] = Math.max(0, qtys[type]+d);
+  if (type==='rombongan' && qtys[type]>0 && qtys[type]<10) qtys[type] = d>0 ? 10 : 0;
+  document.getElementById('qty-'+type).textContent = qtys[type];
+  // show/hide checkmark
+  const chk = document.getElementById('chk-'+type);
+  chk.style.display = qtys[type]>0 ? '' : 'none';
+  updateStep1Btn();
+}
+
+function selectTiket(el, type) {
+  if (qtys[type]===0) chgQty(type,1);
+  updateStep1Btn();
+}
+
+function selectPay(el) {
+  document.querySelectorAll('.pay-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function pilihTanggal(el, date) {
+  document.querySelectorAll('.date-card:not(.full)').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedDate = date;
+}
+
+function updateStep1Btn() {
+  document.getElementById('btn-step1').disabled = total()===0;
+}
+
+function renderSummary(containerId) {
+  let html = '';
+  for (const k in qtys) {
+    if (qtys[k]>0) {
+      html += `<div class="summary-row">
+        <span class="summary-label">${names[k]} × ${qtys[k]}</span>
+        <span class="summary-val">${fmt(qtys[k]*prices[k])}</span>
+      </div>`;
+    }
+  }
+  html += `<div class="summary-row"><span class="summary-label">Tanggal</span><span class="summary-val">${selectedDate}</span></div>`;
+  document.getElementById(containerId).innerHTML = html;
+}
+
+function goStep(n) {
+  if (n===2) {
+    if (total()===0) { alert('Pilih minimal 1 tiket!'); return; }
+    renderSummary('summary-mini');
+  }
+
+  if (n===3) {
+    const nama  = document.getElementById('input-nama').value.trim();
+    const hp    = document.getElementById('input-hp').value.trim();
+    const email = document.getElementById('input-email').value.trim();
+    if (!nama || !hp || !email) { alert('Lengkapi semua data diri!'); return; }
+    if (!email.includes('@')) { alert('Format email tidak valid!'); return; }
+    renderSummary('summary-final');
+    document.getElementById('total-final').textContent = fmt(total());
+    document.getElementById('show-email').textContent  = email;
+  }
+
+  // update tabs
+  for (let i=1; i<=4; i++) {
+    const tab  = document.getElementById('tab-'+i);
+    const snum = document.getElementById('snum-'+i);
+    const cont = document.getElementById('step-'+i);
+    tab.className  = i<n ? 'step-tab done' : i===n ? 'step-tab active' : 'step-tab idle';
+    snum.className = i<n ? 'step-num done' : i===n ? 'step-num active' : 'step-num idle';
+    snum.innerHTML = i<n ? '<i class="ti ti-check" style="font-size:12px"></i>' : i;
+    if (cont) cont.className = 'step-content' + (i===n ? ' active' : '');
+  }
+}
+
+function prosesBayar() {
+
+  const btn = document.getElementById('btn-step3');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin .8s linear infinite"></i> Menyelesaikan Pembayaran...';
+  setTimeout(() => {
+
+  const email = document.getElementById('input-email').value.trim();
+  const nama  = document.getElementById('input-nama').value.trim();
+  sessionStorage.setItem('last_nama', nama);
+  sessionStorage.setItem('last_email', email);
+  sessionStorage.setItem('last_date', selectedDate);
+
+  const kode = 'TRX-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + String(Math.floor(Math.random()*900)+100).padStart(5,'0');
+
+  window.location.href = 'status_transaksi.html?code=' + kode;
+}, 1800);
+}
+updateStep1Btn();
+</script>
+</body>
+</html>

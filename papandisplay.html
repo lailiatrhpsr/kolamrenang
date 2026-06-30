@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AquaCrest — Papan Status Loker</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #060d1f; color: #fff;
+    display: flex; flex-direction: column; min-height: 100vh;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 28px; border-bottom: 1px solid rgba(255,255,255,.07);
+    background: rgba(255,255,255,.03); flex-shrink: 0;
+  }
+  .logo-row { display: flex; align-items: center; gap: 12px; }
+  .logo-icon { width: 40px; height: 40px; background: #38bdf8; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+  .logo-icon i { font-size: 22px; color: #fff; }
+  .logo-text { font-size: 17px; font-weight: 700; }
+  .logo-sub  { font-size: 11px; color: rgba(255,255,255,.4); }
+  .topbar-right { display: flex; align-items: center; gap: 16px; }
+  .live-badge {
+    display: flex; align-items: center; gap: 7px;
+    background: rgba(34,197,94,.15); border: 1px solid rgba(34,197,94,.3);
+    padding: 5px 14px; border-radius: 99px; font-size: 12px; color: #4ade80; font-weight: 500;
+  }
+  .live-dot { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; animation: blink 1.2s ease-in-out infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+  .topbar-clock { font-size: 22px; font-weight: 700; color: rgba(255,255,255,.7); font-variant-numeric: tabular-nums; }
+  .topbar-date  { font-size: 10px; color: rgba(255,255,255,.35); text-align: right; margin-top: 2px; }
+
+  /* ── STAT ROW ── */
+  .stat-row {
+    display: flex; gap: 0; border-bottom: 1px solid rgba(255,255,255,.07);
+    flex-shrink: 0;
+  }
+  .stat-box {
+    flex: 1; padding: 14px 24px; border-right: 1px solid rgba(255,255,255,.07);
+    display: flex; align-items: center; gap: 14px;
+  }
+  .stat-box:last-child { border-right: none; }
+  .stat-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .stat-icon.green { background: rgba(34,197,94,.15); color: #4ade80; }
+  .stat-icon.red   { background: rgba(239,68,68,.15); color: #f87171; }
+  .stat-icon.gray  { background: rgba(255,255,255,.08); color: rgba(255,255,255,.4); }
+  .stat-icon.blue  { background: rgba(56,189,248,.15); color: #38bdf8; }
+  .stat-val   { font-size: 26px; font-weight: 700; line-height: 1; }
+  .stat-label { font-size: 11px; color: rgba(255,255,255,.45); margin-top: 3px; }
+
+  /* ── ZONA GRID ── */
+  .zonas-wrap {
+    flex: 1; display: grid; grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr; gap: 0; overflow: hidden;
+  }
+  .zona {
+    padding: 18px 22px; border-right: 1px solid rgba(255,255,255,.06);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    display: flex; flex-direction: column;
+  }
+  .zona:nth-child(2n)   { border-right: none; }
+  .zona:nth-child(n+3)  { border-bottom: none; }
+  .zona-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .zona-title { font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .zona-title i { font-size: 16px; color: #38bdf8; }
+  .zona-stat { font-size: 11px; color: rgba(255,255,255,.4); }
+  .zona-stat strong { color: #4ade80; }
+
+  /* ── LOKER GRID ── */
+  .loker-grid {
+    flex: 1; display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px; align-content: start;
+  }
+  .loker-cell {
+    aspect-ratio: 1; border-radius: 10px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; cursor: default;
+    transition: all .3s; position: relative; overflow: hidden;
+  }
+  .loker-cell.available {
+    background: rgba(34,197,94,.15); border: 1.5px solid rgba(34,197,94,.3);
+  }
+  .loker-cell.taken {
+    background: rgba(239,68,68,.12); border: 1.5px solid rgba(239,68,68,.25);
+  }
+  .loker-cell.inactive {
+    background: rgba(255,255,255,.04); border: 1.5px solid rgba(255,255,255,.08);
+  }
+  .loker-cell.just-changed { animation: flash .6s ease-out; }
+  @keyframes flash {
+    0%   { box-shadow: 0 0 0 0 rgba(56,189,248,.8); }
+    100% { box-shadow: 0 0 0 14px rgba(56,189,248,0); }
+  }
+  .loker-num {
+    font-size: 16px; font-weight: 700; line-height: 1; margin-bottom: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+  .loker-cell.available .loker-num { color: #4ade80; }
+  .loker-cell.taken     .loker-num { color: #f87171; }
+  .loker-cell.inactive  .loker-num { color: rgba(255,255,255,.2); }
+  .loker-icon { font-size: 14px; }
+  .loker-cell.available .loker-icon { color: rgba(74,222,128,.6); }
+  .loker-cell.taken     .loker-icon { color: rgba(248,113,113,.6); }
+  .loker-cell.inactive  .loker-icon { color: rgba(255,255,255,.15); }
+
+  /* ── LEGEND ── */
+  .legend-bar {
+    display: flex; align-items: center; justify-content: center;
+    gap: 28px; padding: 10px 24px;
+    border-top: 1px solid rgba(255,255,255,.07);
+    background: rgba(255,255,255,.02); flex-shrink: 0;
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: rgba(255,255,255,.5); }
+  .legend-dot { width: 12px; height: 12px; border-radius: 4px; }
+  .legend-dot.green { background: rgba(34,197,94,.4); border: 1px solid rgba(34,197,94,.6); }
+  .legend-dot.red   { background: rgba(239,68,68,.4); border: 1px solid rgba(239,68,68,.6); }
+  .legend-dot.gray  { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); }
+
+  /* ── MARQUEE ── */
+  .marquee-bar { background: rgba(56,189,248,.06); border-top: 1px solid rgba(56,189,248,.12); padding: 5px 0; overflow: hidden; flex-shrink: 0; }
+  .marquee-inner { display: flex; gap: 60px; white-space: nowrap; animation: marquee 20s linear infinite; font-size: 11px; color: rgba(255,255,255,.4); }
+  @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+  .marquee-inner i { color: #38bdf8; margin-right: 4px; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="logo-row">
+    <div class="logo-icon"><i class="ti ti-waves"></i></div>
+    <div>
+      <div class="logo-text">AquaCrest Waterpark</div>
+      <div class="logo-sub">Papan Status Loker Real-Time (SSE Live)</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="live-badge"><div class="live-dot"></div>SSE Live</div>
+    <div>
+      <div class="topbar-clock" id="clock">--:--:--</div>
+      <div class="topbar-date" id="date-text">--</div>
+    </div>
+  </div>
+</header>
+
+<!-- STAT ROW -->
+<div class="stat-row">
+  <div class="stat-box">
+    <div class="stat-icon green"><i class="ti ti-lock-open"></i></div>
+    <div><div class="stat-val" id="stat-available">38</div><div class="stat-label">Loker Tersedia</div></div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-icon red"><i class="ti ti-lock"></i></div>
+    <div><div class="stat-val" id="stat-taken">22</div><div class="stat-label">Loker Terpakai</div></div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-icon gray"><i class="ti ti-tool"></i></div>
+    <div><div class="stat-val" id="stat-inactive">0</div><div class="stat-label">Nonaktif</div></div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-icon blue"><i class="ti ti-percentage"></i></div>
+    <div><div class="stat-val" id="stat-pct">37%</div><div class="stat-label">Terisi</div></div>
+  </div>
+</div>
+
+<!-- ZONAS -->
+<div class="zonas-wrap" id="zonas-wrap">
+  <!-- diisi JS -->
+</div>
+
+<!-- LEGEND -->
+<div class="legend-bar">
+  <div class="legend-item"><div class="legend-dot green"></div>Tersedia</div>
+  <div class="legend-item"><div class="legend-dot red"></div>Terpakai</div>
+  <div class="legend-item"><div class="legend-dot gray"></div>Nonaktif</div>
+  <span style="font-size:11px;color:rgba(255,255,255,.25)">Loker diperbarui otomatis via SSE setiap kali pengunjung tap NFC</span>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <div class="marquee-inner">
+    <span><i class="ti ti-info-circle"></i>Biaya loker sudah termasuk dalam harga tiket masuk</span>
+    <span><i class="ti ti-nfc"></i>Tap gelang NFC Anda untuk membuka dan mengunci loker</span>
+    <span><i class="ti ti-alert-triangle"></i>AquaPass tidak bertanggung jawab atas barang berharga yang ditinggal</span>
+    <span><i class="ti ti-phone"></i>Bantuan petugas loker: hubungi pos keamanan atau tekan tombol darurat</span>
+    <span><i class="ti ti-clock"></i>Loker wajib dikosongkan sebelum jam 17.00 WIB</span>
+    <span><i class="ti ti-info-circle"></i>Biaya loker sudah termasuk dalam harga tiket masuk</span>
+    <span><i class="ti ti-nfc"></i>Tap gelang NFC Anda untuk membuka dan mengunci loker</span>
+    <span><i class="ti ti-alert-triangle"></i>AquaPass tidak bertanggung jawab atas barang berharga yang ditinggal</span>
+    <span><i class="ti ti-phone"></i>Bantuan petugas loker: hubungi pos keamanan atau tekan tombol darurat</span>
+    <span><i class="ti ti-clock"></i>Loker wajib dikosongkan sebelum jam 17.00 WIB</span>
+  </div>
+</div>
+
+<script>
+/* ── CLOCK ── */
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clock').textContent = now.toLocaleTimeString('id-ID', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  document.getElementById('date-text').textContent = now.toLocaleDateString('id-ID', {weekday:'long',day:'numeric',month:'long',year:'numeric'});
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+/* ── ZONA DATA ── */
+const zonas = [
+  { id: 'A', label: 'Zona A', icon: 'ti-map-pin', start: 1,  count: 15 },
+  { id: 'B', label: 'Zona B', icon: 'ti-map-pin', start: 16, count: 15 },
+  { id: 'C', label: 'Zona C', icon: 'ti-map-pin', start: 31, count: 15 },
+  { id: 'D', label: 'Zona D', icon: 'ti-map-pin', start: 46, count: 15 },
+];
+
+// state loker: 0=available, 1=taken, 2=inactive
+const lokerState = {};
+for (let i = 1; i <= 60; i++) {
+  lokerState[i] = Math.random() < 0.37 ? 1 : 0;
+}
+// beberapa nonaktif
+[13, 28, 45].forEach(n => lokerState[n] = 2);
+
+/* ── RENDER ── */
+function renderZonas() {
+  const wrap = document.getElementById('zonas-wrap');
+  wrap.innerHTML = zonas.map(z => {
+    const cells = [];
+    for (let i = z.start; i < z.start + z.count; i++) {
+      const s = lokerState[i];
+      const cls = s === 0 ? 'available' : s === 1 ? 'taken' : 'inactive';
+      const icon = s === 0 ? 'ti-lock-open' : s === 1 ? 'ti-lock' : 'ti-tool';
+      cells.push(`<div class="loker-cell ${cls}" id="loker-${i}">
+        <div class="loker-num">${String(i).padStart(2,'0')}</div>
+        <i class="ti ${icon} loker-icon"></i>
+      </div>`);
+    }
+    const avail = Array.from({length: z.count}, (_,k) => z.start+k).filter(n => lokerState[n] === 0).length;
+    return `<div class="zona">
+      <div class="zona-header">
+        <div class="zona-title"><i class="ti ${z.icon}"></i>${z.label}</div>
+        <div class="zona-stat"><strong>${avail}</strong>/${z.count} tersedia</div>
+      </div>
+      <div class="loker-grid">${cells.join('')}</div>
+    </div>`;
+  }).join('');
+}
+renderZonas();
+
+/* ── UPDATE STATS ── */
+function updateStats() {
+  const avail   = Object.values(lokerState).filter(v => v === 0).length;
+  const taken   = Object.values(lokerState).filter(v => v === 1).length;
+  const inactive = Object.values(lokerState).filter(v => v === 2).length;
+  const pct = Math.round(taken / (avail + taken) * 100);
+  document.getElementById('stat-available').textContent = avail;
+  document.getElementById('stat-taken').textContent     = taken;
+  document.getElementById('stat-inactive').textContent  = inactive;
+  document.getElementById('stat-pct').textContent       = pct + '%';
+}
+updateStats();
+
+/* ── SSE SIMULASI — FLIP LOKER RANDOM ── */
+function flipLoker() {
+  const aktif = Object.keys(lokerState).filter(k => lokerState[k] !== 2);
+  const idx = parseInt(aktif[Math.floor(Math.random() * aktif.length)]);
+  const prev = lokerState[idx];
+  lokerState[idx] = prev === 0 ? 1 : 0;
+
+  // update cell tanpa re-render semua
+  const cell = document.getElementById('loker-' + idx);
+  if (cell) {
+    const s = lokerState[idx];
+    const cls = s === 0 ? 'available' : 'taken';
+    const icon = s === 0 ? 'ti-lock-open' : 'ti-lock';
+    cell.className = `loker-cell ${cls} just-changed`;
+    cell.querySelector('.loker-num').className = 'loker-num';
+    cell.querySelector('.ti').className = `ti ${icon} loker-icon`;
+    setTimeout(() => cell.classList.remove('just-changed'), 700);
+  }
+
+  // update zona header
+  renderZonaHeaders();
+  updateStats();
+}
+
+function renderZonaHeaders() {
+  zonas.forEach(z => {
+    const avail = Array.from({length: z.count}, (_,k) => z.start+k).filter(n => lokerState[n] === 0).length;
+    const zona = document.querySelector(`.zona:nth-child(${zonas.indexOf(z)+1}) .zona-stat`);
+    if (zona) zona.innerHTML = `<strong>${avail}</strong>/${z.count} tersedia`;
+  });
+}
+
+// SSE simulasi: flip loker setiap 2-4 detik
+function scheduleFlip() {
+  const delay = 2000 + Math.random() * 2000;
+  setTimeout(() => { flipLoker(); scheduleFlip(); }, delay);
+}
+scheduleFlip();
+</script>
+</body>
+</html>

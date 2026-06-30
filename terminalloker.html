@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaCrest - Terminal Kios Loker Mandiri</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0d47a1;
+            color: white;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .kiosk-container {
+            background: linear-gradient(145deg, #1565c0, #0d47a1);
+            border: 4px solid #42a5f5;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+        }
+        .nfc-radar {
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            margin: 30px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+        }
+        .nfc-radar i {
+            font-size: 4rem;
+            color: #64b5f6;
+            transition: color 0.3s;
+        }
+        .nfc-radar::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid #64b5f6;
+            border-radius: 50%;
+            animation: ripple 2s infinite ease-out;
+        }
+        @keyframes ripple {
+            0% { transform: scale(0.95); opacity: 1; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+        .status-screen {
+            display: none;
+            padding: 20px;
+            border-radius: 16px;
+        }
+        .bg-success-custom {
+            background-color: #2e7d32 !important;
+        }
+        .bg-danger-custom {
+            background-color: #c62828 !important;
+        }
+        .loker-number-big {
+            font-size: 6rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-shadow: 2px 4px 10px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="kiosk-container">
+        <!-- Standby Screen View -->
+        <div id="standbyScreen">
+            <h1 class="fw-bold mb-2">🌊 AQUAPASS LOKER</h1>
+            <p class="text-white-50 fs-5">ZONA B &bull; Ruang Bilas Utama</p>
+            
+            <!-- Tap Simulator Button Wrapper -->
+            <div class="nfc-radar shadow-lg" onclick="simulateNfcTap()">
+                <i class="fa-solid fa-nfc-symbol"></i>
+            </div>
+            
+            <h4 class="fw-semibold mt-4 text-warning">TAP GELANG ANDA DI SINI</h4>
+            <p class="small text-white-50 mt-2">Sistem otomatis mencarikan loker kosong untuk Anda.</p>
+            
+            <div class="d-flex justify-content-center gap-2 mt-4">
+                <button class="btn btn-sm btn-outline-light" onclick="setNextSimulation('lock')">Simulasi: Kunci Loker Baru</button>
+                <button class="btn btn-sm btn-outline-light" onclick="setNextSimulation('unlock')">Simulasi: Buka Loker</button>
+            </div>
+        </div>
+
+        <!-- Success Screen View -->
+        <div id="successScreen" class="status-screen bg-success-custom animate__animated animate__fadeIn">
+            <i class="fa-solid fa-circle-check fa-5x mb-3 text-white"></i>
+            <h2 class="fw-bold mb-2" id="successTitle">AKSES DITERIMA!</h2>
+            <p class="fs-5 mb-1" id="successMessage">Pintu Kamar Loker Anda Terbuka Otomatis:</p>
+            <div class="loker-number-big my-2" id="assignedLoker">L-24</div>
+            <p class="small text-white-50">Silakan tutup kembali lemari loker dengan rapat agar terkunci otomatis.</p>
+        </div>
+
+        <!-- Error Screen View -->
+        <div id="errorScreen" class="status-screen bg-danger-custom animate__animated animate__fadeIn">
+            <i class="fa-solid fa-triangle-exclamation fa-5x mb-3 text-white"></i>
+            <h2 class="fw-bold mb-2">AKSES DITOLAK!</h2>
+            <p class="fs-5" id="errorMessage">Gelang Anda tidak valid atau transaksi Anda belum diaktifkan oleh petugas Kasir.</p>
+            <p class="small text-white-50 mt-4">Silakan laporkan kendala ke pusat informasi loket.</p>
+        </div>
+    </div>
+
+    <!-- Script logic simulation linking storage values to replicate real network triggers -->
+    <script>
+        let nextSimAction = 'lock';
+
+        function setNextSimulation(mode) {
+            nextSimAction = mode;
+            alert("Mode simulasi diubah ke: " + (mode === 'lock' ? 'Kunci Loker Baru' : 'Buka Loker Terisi'));
+        }
+
+        function playBeep() {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            oscillator.frequency.setValueAtTime(1000, audioCtx.currentTime);
+            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.12);
+        }
+
+        function simulateNfcTap() {
+            playBeep();
+            
+            document.getElementById('standbyScreen').style.display = 'none';
+            
+            // Replicate live reactive storage system states across views
+            let lockerData = JSON.parse(localStorage.getItem('aqua_lockers')) || {};
+
+            if (nextSimAction === 'lock') {
+                // Pick a target item to mock fill
+                let chosenNumber = "L-24";
+                lockerData[chosenNumber] = 'terkunci_terisi';
+                localStorage.setItem('aqua_lockers', JSON.stringify(lockerData));
+
+                document.getElementById('successScreen').style.display = 'block';
+                document.getElementById('successTitle').innerText = "AKSES DITERIMA!";
+                document.getElementById('successMessage').innerText = "Pintu Kamar Loker dialokasikan otomatis:";
+                document.getElementById('assignedLoker').innerText = chosenNumber;
+                
+                // Set toggle action flag flip automatically for easy alternate live loop test
+                nextSimAction = 'unlock';
+            } else {
+                let chosenNumber = "L-24";
+                lockerData[chosenNumber] = 'tersedia';
+                localStorage.setItem('aqua_lockers', JSON.stringify(lockerData));
+
+                document.getElementById('successScreen').style.display = 'block';
+                document.getElementById('successTitle').innerText = "LOKER TERBUKA!";
+                document.getElementById('successMessage').innerText = "Pintu Anda berhasil dibuka. Jangan tinggalkan barang bawaan:";
+                document.getElementById('assignedLoker').innerText = chosenNumber;
+                
+                nextSimAction = 'lock';
+            }
+
+            // Return automatically to original state screen view after 4 seconds
+            setTimeout(() => {
+                document.getElementById('successScreen').style.display = 'none';
+                document.getElementById('errorScreen').style.display = 'none';
+                document.getElementById('standbyScreen').style.display = 'block';
+            }, 4000);
+        }
+    </script>
+</body>
+</html>

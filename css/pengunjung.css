@@ -1,0 +1,202 @@
+:root { 
+  --primary:#1d4ed8; 
+  --accent:#38bdf8; 
+}
+*, *::before, *::after { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+body { 
+  font-family: 'Segoe UI', sans-serif; 
+  background: #f1f5f9; 
+  color: #1e293b; 
+}
+
+/* ── NAVBAR (Shared) ── */
+.topnav { background: #1a3a5c; padding: 0 32px; height: 58px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.nav-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; font-size: 16px; font-weight: 800; color: #fff; letter-spacing: 0.5px; transition: opacity 0.15s; }
+.nav-logo:hover { opacity: 0.9; color: #fff; }
+.nav-links { display: flex; gap: 28px; }
+.nav-link { color: rgba(255,255,255,.6); font-size: 13px; text-decoration: none; transition: color .15s; }
+.nav-link:hover { color: #fff; }
+.nav-link.active { color: var(--accent); font-weight: 500; }
+.nav-right { display: flex; align-items: center; gap: 10px; }
+.btn-staff { background: transparent; color: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.2); font-size: 12px; padding: 6px 14px; border-radius: 7px; cursor: pointer; text-decoration: none; transition: all .15s; display: flex; align-items: center; gap: 6px; }
+.btn-staff:hover { background: rgba(255,255,255,.08); color: #fff; border-color: rgba(255,255,255,.4); }
+
+/* ── HERO (Shared) ── */
+.hero { background: linear-gradient(135deg,#1a3a5c 0%,#1e5799 55%,#0284c7 100%); padding: 64px 20px; text-align: center; color: #fff; }
+.hero-title { color: #fff; font-size: 36px; font-weight: 800; margin-bottom: 12px; }
+.hero-sub { color: rgba(255,255,255,.75); font-size: 14px; margin-bottom: 32px; max-width: 540px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+.btn-cta { padding: 12px 28px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: opacity .15s; box-shadow: 0 4px 14px rgba(29,78,216,.4); }
+.btn-cta:hover { opacity: .9; color: #fff; }
+
+.hero-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(56,189,248,.18); color: #7dd3fc; font-size: 11px; padding: 5px 14px; border-radius: 99px; margin-bottom: 16px; border: 1px solid rgba(56,189,248,.3); }
+.hero-chips { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; }
+.hero-chip  { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.8); font-size: 12px; padding: 6px 14px; border-radius: 99px; display: flex; align-items: center; gap: 6px; }
+
+/* ── MAIN WRAPPER (Shared Layout) ── */
+.main-wrap { max-width: 960px; margin: -30px auto 48px; padding: 0 16px; position: relative; z-index: 10; }
+
+/* ── HALAMAN 1: BERANDA ── */
+.feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.feat-card { background: #fff; border-radius: 18px; padding: 24px; box-shadow: 0 8px 30px rgba(0,0,0,.06); border: 1px solid #e2e8f0; text-align: center; }
+.feat-icon { width: 48px; height: 48px; background: #eff6ff; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 24px; color: var(--primary); }
+.feat-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+.feat-desc { font-size: 12px; color: #64748b; line-height: 1.6; }
+
+.booking-flow { margin-top: 56px; }
+.flow-badge { background: #e0f2fe; color: #0369a1; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 100px; display: inline-block; margin-bottom: 8px; }
+.flow-title { font-size: 24px; font-weight: 800; color: #1a3a5c; margin-bottom: 24px; }
+.flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.flow-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; transition: border-color 0.2s; }
+.flow-card:hover { border-color: var(--accent); }
+.flow-step { width: 28px; height: 28px; background: #0256d6; color: #fff; font-size: 13px; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+.flow-card-title { font-size: 16px; font-weight: 700; color: #1a3a5c; margin-bottom: 12px; }
+.flow-card-desc { font-size: 12px; color: #64748b; line-height: 1.6; }
+
+/* ── HALAMAN 2: BELI TIKET ── */
+.order-card { background: #fff; border-radius: 18px; box-shadow: 0 8px 40px rgba(0,0,0,.12); overflow: hidden; }
+.step-tabs { display: flex; border-bottom: 1px solid #f1f5f9; }
+.step-tab { flex: 1; padding: 16px 10px; text-align: center; font-size: 12px; font-weight: 500; color: #94a3b8; position: relative; cursor: default; }
+.step-tab.active { color: var(--primary); }
+.step-tab.done   { color: #22c55e; }
+.step-tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: var(--primary); }
+.step-tab.done::after   { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: #22c55e; }
+.step-num { width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; margin-right: 6px; font-weight: 700; }
+.step-tab.active .step-num { background: var(--primary); color: #fff; }
+.step-tab.done   .step-num { background: #22c55e; color: #fff; }
+.step-tab.idle   .step-num { background: #f1f5f9; color: #94a3b8; }
+.step-content { display: none; padding: 28px; }
+.step-content.active { display: block; }
+
+.date-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+.date-scroll::-webkit-scrollbar { height: 3px; }
+.date-scroll::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 99px; }
+.date-card { flex-shrink: 0; width: 70px; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 10px 8px; text-align: center; cursor: pointer; transition: all .15s; background: #fff; }
+.date-card:hover { border-color: var(--primary); }
+.date-card.selected { background: var(--primary); border-color: var(--primary); color: #fff !important; }
+.date-card.full  { background: #fafafa; cursor: not-allowed; opacity: .5; }
+.date-day   { font-size: 10px; color: #94a3b8; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .5px; }
+.date-num   { font-size: 20px; font-weight: 700; line-height: 1; color: #1e293b; }
+.date-month { font-size: 10px; color: #64748b; margin-top: 3px; }
+.date-card.selected .date-day, .date-card.selected .date-num, .date-card.selected .date-month { color: #fff; }
+.date-card.selected .date-day { opacity: .8; }
+.date-kuota { font-size: 9px; margin-top: 5px; padding: 2px 0; border-radius: 99px; font-weight: 500; }
+.date-card:not(.selected):not(.full) .date-kuota { color: #22c55e; }
+.date-card.selected .date-kuota { color: rgba(255,255,255,.8); }
+.date-card.full .date-kuota { color: #ef4444; }
+
+.tiket-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 20px; }
+.tiket-card { border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 16px; cursor: pointer; transition: all .15s; position: relative; overflow: hidden; }
+.tiket-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.tiket-card.dewasa::before     { background: #3b82f6; }
+.tiket-card.anak::before       { background: #22c55e; }
+.tiket-card.lansia::before     { background: #f59e0b; }
+.tiket-card.rombongan::before  { background: #ec4899; }
+.tiket-card:hover     { border-color: #94a3b8; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+.tiket-card.selected  { border-width: 2px; box-shadow: 0 0 0 3px rgba(29,78,216,.1); }
+.tiket-card.dewasa.selected    { border-color: #3b82f6; }
+.tiket-card.anak.selected      { border-color: #22c55e; }
+.tiket-card.lansia.selected    { border-color: #f59e0b; }
+.tiket-card.rombongan.selected { border-color: #ec4899; }
+.tiket-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.tiket-badge { font-size: 10px; padding: 3px 10px; border-radius: 99px; font-weight: 600; }
+.tiket-card.dewasa    .tiket-badge { background: #dbeafe; color: #1e40af; }
+.tiket-card.anak      .tiket-badge { background: #dcfce7; color: #166534; }
+.tiket-card.lansia    .tiket-badge { background: #fef9c3; color: #854d0e; }
+.tiket-card.rombongan .tiket-badge { background: #fce7f3; color: #9d174d; }
+.tiket-name  { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+.tiket-desc  { font-size: 11px; color: #64748b; margin-bottom: 12px; line-height: 1.5; }
+.tiket-price { font-size: 22px; font-weight: 800; color: #1e293b; }
+.tiket-price small { font-size: 11px; font-weight: 400; color: #94a3b8; }
+.tiket-qty-row { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; padding-top: 12px; border-top: 1px solid #f1f5f9; }
+.tiket-qty-label { font-size: 12px; color: #475569; }
+.qty-ctrl { display: flex; align-items: center; gap: 8px; }
+.qty-btn { width: 28px; height: 28px; border-radius: 7px; border: 1px solid #e2e8f0; background: #f8fafc; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #334155; transition: all .15s; }
+.qty-btn:hover { background: #e2e8f0; }
+.qty-val { font-size: 16px; font-weight: 700; min-width: 24px; text-align: center; }
+
+.form-section { margin-top: 20px; }
+.form-section-title { font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; padding-bottom: 8px; border-bottom: 1px solid #f1f5f9; }
+.form-section-title i { color: var(--primary); font-size: 15px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group.full { grid-column: 1/-1; }
+.form-label { font-size: 12px; font-weight: 500; color: #374151; }
+.form-label .req { color: #ef4444; }
+.form-control2 { padding: 10px 12px; border: 1.5px solid #e2e8f0; border-radius: 9px; font-size: 13px; color: #1e293b; background: #fff; outline: none; transition: border-color .15s, box-shadow .15s; width: 100%; }
+.form-control2:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(29,78,216,.1); }
+.form-hint { font-size: 10px; color: #94a3b8; }
+.email-note { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px 13px; font-size: 11px; color: #1e40af; display: flex; gap: 8px; margin-top: 12px; }
+.email-note i { font-size: 15px; flex-shrink: 0; }
+
+.pay-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.pay-card { border: 1.5px solid #e2e8f0; border-radius: 11px; padding: 14px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: all .15s; }
+.pay-card:hover   { border-color: #94a3b8; }
+.pay-card.selected { border-color: var(--primary); border-width: 2px; background: #eff6ff; }
+.pay-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.pay-name { font-size: 13px; font-weight: 600; }
+.pay-desc { font-size: 10px; color: #94a3b8; }
+
+.summary-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-top: 16px; }
+.summary-row { display: flex; justify-content: space-between; font-size: 13px; padding: 6px 0; }
+.summary-row.border-top { border-top: 1px solid #e2e8f0; margin-top: 6px; padding-top: 10px; }
+.summary-label { color: #475569; }
+.summary-val   { font-weight: 500; }
+.summary-total { font-size: 20px; font-weight: 800; color: var(--primary); }
+
+.btn-next { width: 100%; padding: 13px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: opacity .15s; margin-top: 20px; }
+.btn-next:hover:not(:disabled) { opacity: .9; }
+.btn-next:disabled { opacity: .4; cursor: not-allowed; }
+.btn-row2 { display: grid; grid-template-columns: auto 1fr; gap: 10px; margin-top: 20px; }
+.btn-back { padding: 13px 20px; background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 13px; cursor: pointer; transition: all .15s; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
+.btn-back:hover { background: #e2e8f0; color: #475569; }
+
+.success-wrap { text-align: center; padding: 32px 20px; }
+.success-icon { width: 72px; height: 72px; background: #dcfce7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 36px; color: #16a34a; }
+.success-title { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+.success-sub   { font-size: 13px; color: #64748b; margin-bottom: 24px; line-height: 1.6; }
+.success-info  { background: #f0fdf4; border: 1px solid #86efac; border-radius: 12px; padding: 16px; margin-bottom: 20px; text-align: left; }
+.success-info-row { display: flex; justify-content: space-between; font-size: 12px; padding: 5px 0; }
+.success-info-row .label { color: #64748b; }
+.success-info-row .val   { font-weight: 600; color: #166534; }
+.btn-download { width: 100%; padding: 12px; background: #22c55e; color: #fff; border: none; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px; }
+.btn-beli-lagi { width: 100%; padding: 12px; background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 13px; cursor: pointer; }
+
+/* ── HALAMAN 3: WAHANA ── */
+.wahana-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.wahana-card { background: #fff; border-radius: 14px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,.04); }
+.wahana-img-placeholder { height: 160px; background: linear-gradient(135deg, #e0f2fe, #bae6fd); display: flex; align-items: center; justify-content: center; font-size: 36px; color: #0284c7; }
+.wahana-body { padding: 18px; }
+.wahana-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.wahana-desc { font-size: 12px; color: #64748b; line-height: 1.5; margin-bottom: 14px; }
+.wahana-meta { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid #f1f5f9; font-size: 11px; }
+.meta-badge { background: #f1f5f9; color: #475569; padding: 3px 8px; border-radius: 6px; font-weight: 500; }
+
+/* ── HALAMAN 4: TEMUKAN KAMI ── */
+.info-card { background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 6px 24px rgba(0,0,0,.05); padding: 28px; }
+.map-mock { height: 260px; background: #e2e8f0; border-radius: 12px; border: 1px dashed #cbd5e1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #64748b; margin-bottom: 24px; }
+.info-row-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.info-title-sub { font-size: 13px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.info-title-sub i { color: var(--primary); font-size: 16px; }
+.info-body-text { font-size: 13px; color: #1e293b; line-height: 1.6; }
+
+/* ── 🌟 NEW SECTIONS: HALAMAN STATUS TRANSAKSI 🌟 ── */
+.body-centered { height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px; }
+.container-box { max-width: 440px; width: 100%; }
+.status-card { background: #fff; width: 100%; border-radius: 18px; padding: 32px; text-align: center; border: 1px solid #e2e8f0; }
+.info-table-status { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 18px; text-align: left; margin: 24px 0; }
+.info-row-status { display: flex; justify-content: space-between; font-size: 12px; padding: 5px 0; }
+.qr-box-status { background: #fff; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 16px; display: inline-block; margin-bottom: 4px; text-align: center; transition: border-color 0.2s; }
+.qr-box-status:hover { border-color: var(--accent); }
+.action-area-status { margin-top: 16px; }
+.btn-action-status { width: 100%; padding: 12px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; transition: opacity .15s; }
+.btn-action-status:hover { opacity: 0.9; color: #fff; }
+
+/* ── ANIMATION & RESPONSIVE BREAKPOINTS ── */
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (max-width: 992px) { .flow-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px) { .main-wrap { max-width: 100%; margin: 16px auto; } .feat-grid, .flow-grid, .nav-links { display: none; } }
+@media (max-width: 600px) { .tiket-grid, .form-grid, .pay-grid, .wahana-grid, .info-row-grid { grid-template-columns: 1fr; } }
